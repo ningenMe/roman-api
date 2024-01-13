@@ -1,0 +1,32 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: roman-api
+paths:
+  /bookmarks:
+    get:
+      responses:
+        '200':
+          description: 'get'
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetResponse"
+components:
+  schemas:
+    Bookmark:
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+      required:
+        - id
+        - title
+    GetResponse:
+      properties:
+        bookmarkList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bookmark"
