@@ -16,6 +16,7 @@
     "roman_api": "file:generated"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.256",
     "@types/react": "^18.2.47",
     "@types/webpack": "^5.28.5",
     "ts-loader": "^9.5.1",

@@ -15,9 +15,9 @@ const config: webpack.Configuration = {
             }
         ]
     },
-    // resolve: {
-    //     extensions: ['.ts', '.js', '.tsx', '.jsx'],
-    // }
+    resolve: {
+        extensions: ['.ts', '.js', '.tsx', '.jsx'],
+    }
 };
 
 export default config;
