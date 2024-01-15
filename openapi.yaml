@@ -16,17 +16,29 @@ components:
   schemas:
     Bookmark:
       properties:
-        id:
-          type: integer
-          format: int64
         title:
           type: string
+        url:
+          type: string
       required:
-        - id
         - title
-    GetResponse:
+        - url
+    BookmarkDirectory:
       properties:
+        title:
+          type: string
         bookmarkList:
           type: array
           items:
             $ref: "#/components/schemas/Bookmark"
+      required:
+        - title
+        - bookmarkList
+    GetResponse:
+      properties:
+        bookmarkDirectoryList:
+          type: array
+          items:
+            $ref: "#/components/schemas/Bookmark"
+      required:
+        - bookmarkDirectoryList

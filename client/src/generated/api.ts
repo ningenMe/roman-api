@@ -31,16 +31,35 @@ import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerM
 export interface Bookmark {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof Bookmark
      */
-    'id': number;
+    'title': string;
     /**
      * 
      * @type {string}
      * @memberof Bookmark
      */
+    'url': string;
+}
+/**
+ * 
+ * @export
+ * @interface BookmarkDirectory
+ */
+export interface BookmarkDirectory {
+    /**
+     * 
+     * @type {string}
+     * @memberof BookmarkDirectory
+     */
     'title': string;
+    /**
+     * 
+     * @type {Array<Bookmark>}
+     * @memberof BookmarkDirectory
+     */
+    'bookmarkList': Array<Bookmark>;
 }
 /**
  * 
@@ -53,7 +72,7 @@ export interface GetResponse {
      * @type {Array<Bookmark>}
      * @memberof GetResponse
      */
-    'bookmarkList'?: Array<Bookmark>;
+    'bookmarkDirectoryList': Array<Bookmark>;
 }
 
 /**
