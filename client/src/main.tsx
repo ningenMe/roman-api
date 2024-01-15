@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { Configuration, DefaultApi } from "./generated";
 
 export const Main = (): JSX.Element => {
     const [devRootNode, setDevRootNode] = useState<chrome.bookmarks.BookmarkTreeNode>();
+
+    const config = new Configuration({
+        basePath: "http://localhost"
+    })
+    const api = new DefaultApi(config);
 
     useEffect(() => 
         {
@@ -9,17 +15,20 @@ export const Main = (): JSX.Element => {
                 chrome.bookmarks.getSubTree(bookmark_tree_results[0].id, (bookmark_details) => {
                     const root = bookmark_details[0];
                     setDevRootNode(root);
+
+                    api.bookmarksGet()
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
                 });
-            });        
+            });      
         }, 
-        [devRootNode]
+        []
     );
 
     return (
         <>
             <div>hoge</div>
             <div>{devRootNode?.title}</div>
-            <div>{devRootNode?.children?.map(node => node.title)}</div>
         </>
     )
 }

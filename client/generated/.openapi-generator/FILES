@@ -1,6 +1,0 @@
-package.json
-src/ApiClient.js
-src/api/DefaultApi.js
-src/index.js
-src/model/Bookmark.js
-src/model/GetResponse.js

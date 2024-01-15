@@ -9,10 +9,8 @@ const config: webpack.Configuration = {
     },
     module: {
         rules: [
-            {
-                test: /\.tsx$/,
-                use: "ts-loader",    
-            }
+            { test: /\.tsx$/, use: "ts-loader",},
+            { test: /\.ts$/, use: "ts-loader",},
         ]
     },
     resolve: {

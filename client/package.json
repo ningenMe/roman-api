@@ -10,14 +10,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react-dom": "^18.2.18",
+    "axios": "^1.6.5",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "roman_api": "file:generated"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.256",
     "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
     "@types/webpack": "^5.28.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.2",
