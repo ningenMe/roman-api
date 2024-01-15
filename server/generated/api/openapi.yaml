@@ -1,0 +1,56 @@
+openapi: 3.0.0
+info:
+  title: roman-api
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /bookmarks:
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetResponse'
+          description: get
+components:
+  schemas:
+    Bookmark:
+      example:
+        title: title
+        url: url
+      properties:
+        title:
+          type: string
+        url:
+          type: string
+      required:
+      - title
+      - url
+    BookmarkDirectory:
+      properties:
+        title:
+          type: string
+        bookmarkList:
+          items:
+            $ref: '#/components/schemas/Bookmark'
+          type: array
+      required:
+      - bookmarkList
+      - title
+    GetResponse:
+      example:
+        bookmarkDirectoryList:
+        - title: title
+          url: url
+        - title: title
+          url: url
+      properties:
+        bookmarkDirectoryList:
+          items:
+            $ref: '#/components/schemas/Bookmark'
+          type: array
+      required:
+      - bookmarkDirectoryList
+
