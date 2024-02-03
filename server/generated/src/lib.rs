@@ -18,7 +18,7 @@ pub const API_VERSION: &str = "1.0.0";
 pub enum BookmarksGetResponse {
     /// get
     Get
-    (models::GetBookmarkResponse)
+    (models::BookmarkGetOkResponse)
 }
 
 /// API

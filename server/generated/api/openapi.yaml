@@ -12,7 +12,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetBookmarkResponse'
+                $ref: '#/components/schemas/BookmarkGetOkResponse'
           description: get
 components:
   schemas:
@@ -39,7 +39,7 @@ components:
       required:
       - bookmarkList
       - title
-    GetBookmarkResponse:
+    BookmarkGetOkResponse:
       example:
         bookmarkDirectoryList:
         - title: title

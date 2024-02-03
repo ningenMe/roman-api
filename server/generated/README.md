@@ -14,7 +14,7 @@ To see how to make this your own, look here:
 [README]((https://openapi-generator.tech))
 
 - API version: 1.0.0
-- Build date: 2024-02-04T03:29:32.665648+09:00[Asia/Tokyo]
+- Build date: 2024-02-04T03:46:35.734859+09:00[Asia/Tokyo]
 
 
 
@@ -102,7 +102,7 @@ Method | HTTP request | Description
 
  - [Bookmark](docs/Bookmark.md)
  - [BookmarkDirectory](docs/BookmarkDirectory.md)
- - [GetBookmarkResponse](docs/GetBookmarkResponse.md)
+ - [BookmarkGetOkResponse](docs/BookmarkGetOkResponse.md)
 
 
 ## Documentation For Authorization

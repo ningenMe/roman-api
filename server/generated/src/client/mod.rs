@@ -430,7 +430,7 @@ impl<S, C> Api<C> for Client<S, C> where
                         .map_err(|e| ApiError(format!("Failed to read response: {}", e))).await?;
                 let body = str::from_utf8(&body)
                     .map_err(|e| ApiError(format!("Response was not valid UTF8: {}", e)))?;
-                let body = serde_json::from_str::<models::GetBookmarkResponse>(body).map_err(|e| {
+                let body = serde_json::from_str::<models::BookmarkGetOkResponse>(body).map_err(|e| {
                     ApiError(format!("Response body did not match the schema: {}", e))
                 })?;
                 Ok(BookmarksGetResponse::Get

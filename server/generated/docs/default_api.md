@@ -8,7 +8,7 @@ Method | HTTP request | Description
 
 
 # ****
-> models::GetBookmarkResponse ()
+> models::BookmarkGetOkResponse ()
 
 
 ### Required Parameters
@@ -16,7 +16,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**models::GetBookmarkResponse**](GetBookmarkResponse.md)
+[**models::BookmarkGetOkResponse**](BookmarkGetOkResponse.md)
 
 ### Authorization
 

@@ -25,7 +25,7 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
     async fn bookmarks_get(&self, _: &C) -> Result<BookmarksGetResponse, ApiError>
     {
         return Ok(BookmarksGetResponse::Get(
-            models::GetBookmarkResponse{ 
+            models::BookmarkGetOkResponse{ 
             bookmark_directory_list: vec![]
         }));
     }
