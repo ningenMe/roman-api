@@ -16,9 +16,16 @@ pub const API_VERSION: &str = "1.0.0";
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub enum BookmarksGetResponse {
-    /// get
-    Get
+    /// ok response
+    OkResponse
     (models::BookmarkGetOkResponse)
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub enum BookmarksPostResponse {
+    /// ok response
+    OkResponse
+    (models::BookmarkPostOkResponse)
 }
 
 /// API
@@ -32,6 +39,11 @@ pub trait Api<C: Send + Sync> {
     async fn bookmarks_get(
         &self,
         context: &C) -> Result<BookmarksGetResponse, ApiError>;
+
+    async fn bookmarks_post(
+        &self,
+        bookmark_post_request_body: models::BookmarkPostRequestBody,
+        context: &C) -> Result<BookmarksPostResponse, ApiError>;
 
 }
 
@@ -47,6 +59,11 @@ pub trait ApiNoContext<C: Send + Sync> {
     async fn bookmarks_get(
         &self,
         ) -> Result<BookmarksGetResponse, ApiError>;
+
+    async fn bookmarks_post(
+        &self,
+        bookmark_post_request_body: models::BookmarkPostRequestBody,
+        ) -> Result<BookmarksPostResponse, ApiError>;
 
 }
 
@@ -79,6 +96,15 @@ impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ApiNoContext<C> for Contex
     {
         let context = self.context().clone();
         self.api().bookmarks_get(&context).await
+    }
+
+    async fn bookmarks_post(
+        &self,
+        bookmark_post_request_body: models::BookmarkPostRequestBody,
+        ) -> Result<BookmarksPostResponse, ApiError>
+    {
+        let context = self.context().clone();
+        self.api().bookmarks_post(bookmark_post_request_body, &context).await
     }
 
 }

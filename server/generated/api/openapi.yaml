@@ -13,7 +13,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BookmarkGetOkResponse'
-          description: get
+          description: ok response
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookmarkPostRequestBody'
+        description: request body
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookmarkPostOkResponse'
+          description: ok response
 components:
   schemas:
     Bookmark:
@@ -53,4 +68,26 @@ components:
           type: array
       required:
       - bookmarkDirectoryList
+    BookmarkPostRequestBody:
+      example:
+        bookmarkDirectoryList:
+        - title: title
+          url: url
+        - title: title
+          url: url
+      properties:
+        bookmarkDirectoryList:
+          items:
+            $ref: '#/components/schemas/Bookmark'
+          type: array
+      required:
+      - bookmarkDirectoryList
+    BookmarkPostOkResponse:
+      example:
+        message: message
+      properties:
+        message:
+          type: string
+      required:
+      - message
 

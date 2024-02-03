@@ -6,6 +6,8 @@ api/openapi.yaml
 docs/Bookmark.md
 docs/BookmarkDirectory.md
 docs/BookmarkGetOkResponse.md
+docs/BookmarkPostOkResponse.md
+docs/BookmarkPostRequestBody.md
 docs/default_api.md
 examples/ca.pem
 examples/client/main.rs

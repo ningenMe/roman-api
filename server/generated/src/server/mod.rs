@@ -22,7 +22,8 @@ pub use crate::context;
 type ServiceFuture = BoxFuture<'static, Result<Response<Body>, crate::ServiceError>>;
 
 use crate::{Api,
-     BookmarksGetResponse
+     BookmarksGetResponse,
+     BookmarksPostResponse
 };
 
 mod paths {
@@ -152,14 +153,14 @@ impl<T, C> hyper::service::Service<(Request<Body>, C)> for Service<T, C> where
 
                                         match result {
                                             Ok(rsp) => match rsp {
-                                                BookmarksGetResponse::Get
+                                                BookmarksGetResponse::OkResponse
                                                     (body)
                                                 => {
                                                     *response.status_mut() = StatusCode::from_u16(200).expect("Unable to turn 200 into a StatusCode");
                                                     response.headers_mut().insert(
                                                         CONTENT_TYPE,
                                                         HeaderValue::from_str("application/json")
-                                                            .expect("Unable to create Content-Type header for BOOKMARKS_GET_GET"));
+                                                            .expect("Unable to create Content-Type header for BOOKMARKS_GET_OK_RESPONSE"));
                                                     let body_content = serde_json::to_string(&body).expect("impossible to fail to serialize");
                                                     *response.body_mut() = Body::from(body_content);
                                                 },
@@ -173,6 +174,86 @@ impl<T, C> hyper::service::Service<(Request<Body>, C)> for Service<T, C> where
                                         }
 
                                         Ok(response)
+            },
+
+            // BookmarksPost - POST /bookmarks
+            hyper::Method::POST if path.matched(paths::ID_BOOKMARKS) => {
+                // Body parameters (note that non-required body parameters will ignore garbage
+                // values, rather than causing a 400 response). Produce warning header and logs for
+                // any unused fields.
+                let result = body.into_raw().await;
+                match result {
+                            Ok(body) => {
+                                let mut unused_elements = Vec::new();
+                                let param_bookmark_post_request_body: Option<models::BookmarkPostRequestBody> = if !body.is_empty() {
+                                    let deserializer = &mut serde_json::Deserializer::from_slice(&body);
+                                    match serde_ignored::deserialize(deserializer, |path| {
+                                            warn!("Ignoring unknown field in body: {}", path);
+                                            unused_elements.push(path.to_string());
+                                    }) {
+                                        Ok(param_bookmark_post_request_body) => param_bookmark_post_request_body,
+                                        Err(e) => return Ok(Response::builder()
+                                                        .status(StatusCode::BAD_REQUEST)
+                                                        .body(Body::from(format!("Couldn't parse body parameter BookmarkPostRequestBody - doesn't match schema: {}", e)))
+                                                        .expect("Unable to create Bad Request response for invalid body parameter BookmarkPostRequestBody due to schema")),
+                                    }
+                                } else {
+                                    None
+                                };
+                                let param_bookmark_post_request_body = match param_bookmark_post_request_body {
+                                    Some(param_bookmark_post_request_body) => param_bookmark_post_request_body,
+                                    None => return Ok(Response::builder()
+                                                        .status(StatusCode::BAD_REQUEST)
+                                                        .body(Body::from("Missing required body parameter BookmarkPostRequestBody"))
+                                                        .expect("Unable to create Bad Request response for missing body parameter BookmarkPostRequestBody")),
+                                };
+
+                                let result = api_impl.bookmarks_post(
+                                            param_bookmark_post_request_body,
+                                        &context
+                                    ).await;
+                                let mut response = Response::new(Body::empty());
+                                response.headers_mut().insert(
+                                            HeaderName::from_static("x-span-id"),
+                                            HeaderValue::from_str((&context as &dyn Has<XSpanIdString>).get().0.clone().as_str())
+                                                .expect("Unable to create X-Span-ID header value"));
+
+                                        if !unused_elements.is_empty() {
+                                            response.headers_mut().insert(
+                                                HeaderName::from_static("warning"),
+                                                HeaderValue::from_str(format!("Ignoring unknown fields in body: {:?}", unused_elements).as_str())
+                                                    .expect("Unable to create Warning header value"));
+                                        }
+
+                                        match result {
+                                            Ok(rsp) => match rsp {
+                                                BookmarksPostResponse::OkResponse
+                                                    (body)
+                                                => {
+                                                    *response.status_mut() = StatusCode::from_u16(200).expect("Unable to turn 200 into a StatusCode");
+                                                    response.headers_mut().insert(
+                                                        CONTENT_TYPE,
+                                                        HeaderValue::from_str("application/json")
+                                                            .expect("Unable to create Content-Type header for BOOKMARKS_POST_OK_RESPONSE"));
+                                                    let body_content = serde_json::to_string(&body).expect("impossible to fail to serialize");
+                                                    *response.body_mut() = Body::from(body_content);
+                                                },
+                                            },
+                                            Err(_) => {
+                                                // Application code returned an error. This should not happen, as the implementation should
+                                                // return a valid response.
+                                                *response.status_mut() = StatusCode::INTERNAL_SERVER_ERROR;
+                                                *response.body_mut() = Body::from("An internal error occurred");
+                                            },
+                                        }
+
+                                        Ok(response)
+                            },
+                            Err(e) => Ok(Response::builder()
+                                                .status(StatusCode::BAD_REQUEST)
+                                                .body(Body::from(format!("Couldn't read body parameter BookmarkPostRequestBody: {}", e)))
+                                                .expect("Unable to create Bad Request response due to unable to read body parameter BookmarkPostRequestBody")),
+                        }
             },
 
             _ if path.matched(paths::ID_BOOKMARKS) => method_not_allowed(),
@@ -191,6 +272,8 @@ impl<T> RequestParser<T> for ApiRequestParser {
         match *request.method() {
             // BookmarksGet - GET /bookmarks
             hyper::Method::GET if path.matched(paths::ID_BOOKMARKS) => Some("BookmarksGet"),
+            // BookmarksPost - POST /bookmarks
+            hyper::Method::POST if path.matched(paths::ID_BOOKMARKS) => Some("BookmarksPost"),
             _ => None,
         }
     }

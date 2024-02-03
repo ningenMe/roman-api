@@ -6,6 +6,7 @@ use futures::{future, Stream, stream};
 #[allow(unused_imports)]
 use generated::{Api, ApiNoContext, Client, ContextWrapperExt, models,
                       BookmarksGetResponse,
+                      BookmarksPostResponse,
                      };
 use clap::{App, Arg};
 
@@ -76,6 +77,14 @@ fn main() {
             ));
             info!("{:?} (X-Span-ID: {:?})", result, (client.context() as &dyn Has<XSpanIdString>).get().clone());
         },
+        /* Disabled because there's no example.
+        Some("BookmarksPost") => {
+            let result = rt.block_on(client.bookmarks_post(
+                  ???
+            ));
+            info!("{:?} (X-Span-ID: {:?})", result, (client.context() as &dyn Has<XSpanIdString>).get().clone());
+        },
+        */
         _ => {
             panic!("Invalid operation provided")
         }

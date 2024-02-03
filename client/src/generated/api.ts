@@ -74,6 +74,32 @@ export interface BookmarkGetOkResponse {
      */
     'bookmarkDirectoryList': Array<Bookmark>;
 }
+/**
+ * 
+ * @export
+ * @interface BookmarkPostOkResponse
+ */
+export interface BookmarkPostOkResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof BookmarkPostOkResponse
+     */
+    'message': string;
+}
+/**
+ * 
+ * @export
+ * @interface BookmarkPostRequestBody
+ */
+export interface BookmarkPostRequestBody {
+    /**
+     * 
+     * @type {Array<Bookmark>}
+     * @memberof BookmarkPostRequestBody
+     */
+    'bookmarkDirectoryList': Array<Bookmark>;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -110,6 +136,41 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {BookmarkPostRequestBody} bookmarkPostRequestBody request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bookmarksPost: async (bookmarkPostRequestBody: BookmarkPostRequestBody, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'bookmarkPostRequestBody' is not null or undefined
+            assertParamExists('bookmarksPost', 'bookmarkPostRequestBody', bookmarkPostRequestBody)
+            const localVarPath = `/bookmarks`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(bookmarkPostRequestBody, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -131,6 +192,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const operationBasePath = operationServerMap['DefaultApi.bookmarksGet']?.[index]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
         },
+        /**
+         * 
+         * @param {BookmarkPostRequestBody} bookmarkPostRequestBody request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async bookmarksPost(bookmarkPostRequestBody: BookmarkPostRequestBody, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BookmarkPostOkResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.bookmarksPost(bookmarkPostRequestBody, options);
+            const index = configuration?.serverIndex ?? 0;
+            const operationBasePath = operationServerMap['DefaultApi.bookmarksPost']?.[index]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, operationBasePath || basePath);
+        },
     }
 };
 
@@ -148,6 +221,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         bookmarksGet(options?: any): AxiosPromise<BookmarkGetOkResponse> {
             return localVarFp.bookmarksGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {BookmarkPostRequestBody} bookmarkPostRequestBody request body
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        bookmarksPost(bookmarkPostRequestBody: BookmarkPostRequestBody, options?: any): AxiosPromise<BookmarkPostOkResponse> {
+            return localVarFp.bookmarksPost(bookmarkPostRequestBody, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -167,6 +249,17 @@ export class DefaultApi extends BaseAPI {
      */
     public bookmarksGet(options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).bookmarksGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {BookmarkPostRequestBody} bookmarkPostRequestBody request body
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public bookmarksPost(bookmarkPostRequestBody: BookmarkPostRequestBody, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).bookmarksPost(bookmarkPostRequestBody, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -95,6 +95,7 @@ impl<C> Server<C> {
 use generated::{
     Api,
     BookmarksGetResponse,
+    BookmarksPostResponse,
 };
 use generated::server::MakeService;
 use std::error::Error;
@@ -108,6 +109,15 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         context: &C) -> Result<BookmarksGetResponse, ApiError>
     {
         info!("bookmarks_get() - X-Span-ID: {:?}", context.get().0.clone());
+        Err(ApiError("Generic failure".into()))
+    }
+
+    async fn bookmarks_post(
+        &self,
+        bookmark_post_request_body: models::BookmarkPostRequestBody,
+        context: &C) -> Result<BookmarksPostResponse, ApiError>
+    {
+        info!("bookmarks_post({:?}) - X-Span-ID: {:?}", bookmark_post_request_body, context.get().0.clone());
         Err(ApiError("Generic failure".into()))
     }
 

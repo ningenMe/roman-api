@@ -14,7 +14,7 @@ To see how to make this your own, look here:
 [README]((https://openapi-generator.tech))
 
 - API version: 1.0.0
-- Build date: 2024-02-04T03:46:35.734859+09:00[Asia/Tokyo]
+- Build date: 2024-02-04T03:52:59.282113+09:00[Asia/Tokyo]
 
 
 
@@ -96,6 +96,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [****](docs/default_api.md#) | **GET** /bookmarks | 
+[****](docs/default_api.md#) | **POST** /bookmarks | 
 
 
 ## Documentation For Models
@@ -103,6 +104,8 @@ Method | HTTP request | Description
  - [Bookmark](docs/Bookmark.md)
  - [BookmarkDirectory](docs/BookmarkDirectory.md)
  - [BookmarkGetOkResponse](docs/BookmarkGetOkResponse.md)
+ - [BookmarkPostOkResponse](docs/BookmarkPostOkResponse.md)
+ - [BookmarkPostRequestBody](docs/BookmarkPostRequestBody.md)
 
 
 ## Documentation For Authorization
