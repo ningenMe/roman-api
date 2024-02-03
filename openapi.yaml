@@ -55,7 +55,7 @@ components:
         bookmarkDirectoryList:
           type: array
           items:
-            $ref: "#/components/schemas/Bookmark"
+            $ref: "#/components/schemas/BookmarkDirectory"
       required:
         - bookmarkDirectoryList
     BookmarkPostRequestBody:
@@ -63,7 +63,7 @@ components:
         bookmarkDirectoryList:
           type: array
           items:
-            $ref: "#/components/schemas/Bookmark"
+            $ref: "#/components/schemas/BookmarkDirectory"
       required:
         - bookmarkDirectoryList
     BookmarkPostOkResponse:

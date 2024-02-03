@@ -269,14 +269,14 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkGetOkResponse {
     #[serde(rename = "bookmarkDirectoryList")]
-    pub bookmark_directory_list: Vec<models::Bookmark>,
+    pub bookmark_directory_list: Vec<models::BookmarkDirectory>,
 
 }
 
 
 impl BookmarkGetOkResponse {
     #[allow(clippy::new_without_default)]
-    pub fn new(bookmark_directory_list: Vec<models::Bookmark>, ) -> BookmarkGetOkResponse {
+    pub fn new(bookmark_directory_list: Vec<models::BookmarkDirectory>, ) -> BookmarkGetOkResponse {
         BookmarkGetOkResponse {
             bookmark_directory_list,
         }
@@ -308,7 +308,7 @@ impl std::str::FromStr for BookmarkGetOkResponse {
         #[derive(Default)]
         #[allow(dead_code)]
         struct IntermediateRep {
-            pub bookmark_directory_list: Vec<Vec<models::Bookmark>>,
+            pub bookmark_directory_list: Vec<Vec<models::BookmarkDirectory>>,
         }
 
         let mut intermediate_rep = IntermediateRep::default();
@@ -504,14 +504,14 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkPostRequestBody {
     #[serde(rename = "bookmarkDirectoryList")]
-    pub bookmark_directory_list: Vec<models::Bookmark>,
+    pub bookmark_directory_list: Vec<models::BookmarkDirectory>,
 
 }
 
 
 impl BookmarkPostRequestBody {
     #[allow(clippy::new_without_default)]
-    pub fn new(bookmark_directory_list: Vec<models::Bookmark>, ) -> BookmarkPostRequestBody {
+    pub fn new(bookmark_directory_list: Vec<models::BookmarkDirectory>, ) -> BookmarkPostRequestBody {
         BookmarkPostRequestBody {
             bookmark_directory_list,
         }
@@ -543,7 +543,7 @@ impl std::str::FromStr for BookmarkPostRequestBody {
         #[derive(Default)]
         #[allow(dead_code)]
         struct IntermediateRep {
-            pub bookmark_directory_list: Vec<Vec<models::Bookmark>>,
+            pub bookmark_directory_list: Vec<Vec<models::BookmarkDirectory>>,
         }
 
         let mut intermediate_rep = IntermediateRep::default();

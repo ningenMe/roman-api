@@ -13,6 +13,6 @@ async fn main() {
             MakeAllowAllAuthenticator::new(MakeService::new(server), "cosmo")
         );
 
-    let addr = "127.0.0.1:8080".parse().expect("Failed to parse bind address");
+    let addr = "0.0.0.0:50051".parse().expect("Failed to parse bind address");
     hyper::server::Server::bind(&addr).serve(service).await.unwrap()
 }

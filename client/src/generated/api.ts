@@ -69,10 +69,10 @@ export interface BookmarkDirectory {
 export interface BookmarkGetOkResponse {
     /**
      * 
-     * @type {Array<Bookmark>}
+     * @type {Array<BookmarkDirectory>}
      * @memberof BookmarkGetOkResponse
      */
-    'bookmarkDirectoryList': Array<Bookmark>;
+    'bookmarkDirectoryList': Array<BookmarkDirectory>;
 }
 /**
  * 
@@ -95,10 +95,10 @@ export interface BookmarkPostOkResponse {
 export interface BookmarkPostRequestBody {
     /**
      * 
-     * @type {Array<Bookmark>}
+     * @type {Array<BookmarkDirectory>}
      * @memberof BookmarkPostRequestBody
      */
-    'bookmarkDirectoryList': Array<Bookmark>;
+    'bookmarkDirectoryList': Array<BookmarkDirectory>;
 }
 
 /**

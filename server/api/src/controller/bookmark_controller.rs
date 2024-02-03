@@ -26,7 +26,7 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
     {
         return Ok(BookmarksGetResponse::OkResponse(
             models::BookmarkGetOkResponse{ 
-            bookmark_directory_list: vec![]
+            bookmark_directory_list: infra::get()
         }));
     }
 
@@ -34,6 +34,7 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
         bookmark_post_request_body: models::BookmarkPostRequestBody,
         _: &C) -> Result<BookmarksPostResponse, ApiError>
     {
+        infra::set(bookmark_post_request_body.bookmark_directory_list);
         return Ok(BookmarksPostResponse::OkResponse(
             models::BookmarkPostOkResponse { 
                 message: "ok".to_string() 

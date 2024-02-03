@@ -44,6 +44,13 @@ components:
       - title
       - url
     BookmarkDirectory:
+      example:
+        title: title
+        bookmarkList:
+        - title: title
+          url: url
+        - title: title
+          url: url
       properties:
         title:
           type: string
@@ -58,13 +65,21 @@ components:
       example:
         bookmarkDirectoryList:
         - title: title
-          url: url
+          bookmarkList:
+          - title: title
+            url: url
+          - title: title
+            url: url
         - title: title
-          url: url
+          bookmarkList:
+          - title: title
+            url: url
+          - title: title
+            url: url
       properties:
         bookmarkDirectoryList:
           items:
-            $ref: '#/components/schemas/Bookmark'
+            $ref: '#/components/schemas/BookmarkDirectory'
           type: array
       required:
       - bookmarkDirectoryList
@@ -72,13 +87,21 @@ components:
       example:
         bookmarkDirectoryList:
         - title: title
-          url: url
+          bookmarkList:
+          - title: title
+            url: url
+          - title: title
+            url: url
         - title: title
-          url: url
+          bookmarkList:
+          - title: title
+            url: url
+          - title: title
+            url: url
       properties:
         bookmarkDirectoryList:
           items:
-            $ref: '#/components/schemas/Bookmark'
+            $ref: '#/components/schemas/BookmarkDirectory'
           type: array
       required:
       - bookmarkDirectoryList
