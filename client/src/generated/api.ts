@@ -64,13 +64,13 @@ export interface BookmarkDirectory {
 /**
  * 
  * @export
- * @interface GetResponse
+ * @interface GetBookmarkResponse
  */
-export interface GetResponse {
+export interface GetBookmarkResponse {
     /**
      * 
      * @type {Array<Bookmark>}
-     * @memberof GetResponse
+     * @memberof GetBookmarkResponse
      */
     'bookmarkDirectoryList': Array<Bookmark>;
 }
@@ -125,7 +125,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async bookmarksGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetResponse>> {
+        async bookmarksGet(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<GetBookmarkResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.bookmarksGet(options);
             const index = configuration?.serverIndex ?? 0;
             const operationBasePath = operationServerMap['DefaultApi.bookmarksGet']?.[index]?.url;
@@ -146,7 +146,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        bookmarksGet(options?: any): AxiosPromise<GetResponse> {
+        bookmarksGet(options?: any): AxiosPromise<GetBookmarkResponse> {
             return localVarFp.bookmarksGet(options).then((request) => request(axios, basePath));
         },
     };

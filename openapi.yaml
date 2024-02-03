@@ -11,7 +11,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetResponse"
+                $ref: "#/components/schemas/GetBookmarkResponse"
 components:
   schemas:
     Bookmark:
@@ -34,7 +34,7 @@ components:
       required:
         - title
         - bookmarkList
-    GetResponse:
+    GetBookmarkResponse:
       properties:
         bookmarkDirectoryList:
           type: array

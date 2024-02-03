@@ -5,7 +5,7 @@ README.md
 api/openapi.yaml
 docs/Bookmark.md
 docs/BookmarkDirectory.md
-docs/GetResponse.md
+docs/GetBookmarkResponse.md
 docs/default_api.md
 examples/ca.pem
 examples/client/main.rs
