@@ -1,0 +1,74 @@
+name: deploy api
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+
+run-name: deploy api
+
+jobs:
+  constant:
+    runs-on: ubuntu-latest
+    outputs:
+      aws-region: ${{ steps.constant.outputs.aws-region }}
+      aws-ecr-registry: ${{ secrets.AWS_ECR_REGISTRY }}
+      docker-image-name: roman-api-repository:${{ github.sha }}
+      rust-version: ${{ steps.constant.outputs.rust-version }}
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3.5.0
+      - id: constant
+        name: constant
+        uses: ningenMe/chiyuki-k8s-config/action/constant@main
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    needs: [ constant ]
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3.5.0
+      - id: setup-rustup
+        name: setup rustup
+        uses: ningenMe/setup-rustup@v1.1.0
+        with:
+          rust-version: 1.74.1
+      - id: setup-protoc
+        name: setup protoc
+        uses: arduino/setup-protoc@v2
+      - id: setup-other
+        name: setup other
+        run: |
+          sudo apt-get install musl-tools
+          rustup target add x86_64-unknown-linux-musl
+        shell: bash
+      - id: cargo-build
+        name: cargo build
+        run: |
+          cd server
+          cargo build -p api --target=x86_64-unknown-linux-musl --release
+        shell: bash
+      - id: docker-image-push
+        name: docker-image-push
+        uses: ningenMe/chiyuki-k8s-config/action/docker-image-push@main
+        with:
+          role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
+          aws-region: ${{ needs.constant.outputs.aws-region }}
+          aws-ecr-registry: ${{ secrets.AWS_ECR_REGISTRY }}
+          docker-image-name: ${{ needs.constant.outputs.docker-image-name }}
+          dockerfile-path: ./server/api
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [ constant, build-and-push-image ]
+    steps:
+      - id: checkout
+        name: checkout
+        uses: actions/checkout@v3.5.0
+      - id: kick-deploy
+        name: kick deploy
+        uses: ningenMe/chiyuki-k8s-config/action/kick-deploy@main
+        with:
+          deploy-token: ${{ secrets.DEPLOY_TOKEN }}
+          application-name: roman-api
