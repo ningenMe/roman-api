@@ -8,5 +8,8 @@
     },
     "permissions": [
         "bookmarks", "scripting"
+    ],
+    "host_permissions": [
+        "https://roman-api.ningenme.net/"
     ]
 }

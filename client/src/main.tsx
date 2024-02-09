@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Configuration, DefaultApi } from "./generated";
+import { Bookmark, BookmarkDirectory, Configuration, DefaultApi } from "./generated";
 
 export const Main = (): JSX.Element => {
-    const [devRootNode, setDevRootNode] = useState<chrome.bookmarks.BookmarkTreeNode>();
+    const [devBookMarkDirectoryList, setDevBookMarkDirectoryList] = useState<Array<BookmarkDirectory>>([]);
 
     const config = new Configuration({
-        basePath: "http://localhost"
+        basePath: "https://roman-api.ningenme.net"
     })
     const api = new DefaultApi(config);
 
@@ -14,9 +14,20 @@ export const Main = (): JSX.Element => {
             chrome.bookmarks.search({title: "dev"}, (bookmark_tree_results) => {
                 chrome.bookmarks.getSubTree(bookmark_tree_results[0].id, (bookmark_details) => {
                     const root = bookmark_details[0];
-                    setDevRootNode(root);
-
-                    api.bookmarksGet()
+                    const bookMarkDirectoryList = root.children?.map(firstNode => {
+                        const bookmarkList = firstNode.children?.map(secondNode => {
+                            return {
+                                title: secondNode.title,
+                                url: secondNode.url ?? '',
+                            }
+                        }) ?? []
+                        return {
+                            title: firstNode.title,
+                            bookmarkList: bookmarkList,
+                        };
+                    }) ?? [];
+                    setDevBookMarkDirectoryList(bookMarkDirectoryList);
+                    api.bookmarksPost({bookmarkDirectoryList: bookMarkDirectoryList})
                     .then((res) => console.log(res))
                     .catch((err) => console.log(err));
                 });
@@ -27,8 +38,7 @@ export const Main = (): JSX.Element => {
 
     return (
         <>
-            <div>hoge</div>
-            <div>{devRootNode?.title}</div>
+            <div>dev bookmark synced!</div>
         </>
     )
 }
