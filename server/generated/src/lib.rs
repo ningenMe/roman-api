@@ -3,131 +3,66 @@
 #![allow(clippy::derive_partial_eq_without_eq, clippy::disallowed_names)]
 
 use async_trait::async_trait;
-use futures::Stream;
-use std::error::Error;
-use std::task::{Poll, Context};
-use swagger::{ApiError, ContextWrapper};
-use serde::{Serialize, Deserialize};
+use axum::extract::*;
+use axum_extra::extract::{CookieJar, Multipart};
+use bytes::Bytes;
+use http::Method;
+use serde::{Deserialize, Serialize};
 
-type ServiceError = Box<dyn Error + Send + Sync + 'static>;
+use types::*;
 
 pub const BASE_PATH: &str = "";
 pub const API_VERSION: &str = "1.0.0";
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+        #[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[must_use]
+#[allow(clippy::large_enum_variant)]
 pub enum BookmarksGetResponse {
     /// ok response
-    OkResponse
+    Status200_OkResponse
     (models::BookmarkGetOkResponse)
 }
 
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
+        #[derive(Debug, PartialEq, Serialize, Deserialize)]
+#[must_use]
+#[allow(clippy::large_enum_variant)]
 pub enum BookmarksPostResponse {
     /// ok response
-    OkResponse
+    Status200_OkResponse
     (models::BookmarkPostOkResponse)
 }
 
+
 /// API
 #[async_trait]
-#[allow(clippy::too_many_arguments, clippy::ptr_arg)]
-pub trait Api<C: Send + Sync> {
-    fn poll_ready(&self, _cx: &mut Context) -> Poll<Result<(), Box<dyn Error + Send + Sync + 'static>>> {
-        Poll::Ready(Ok(()))
-    }
+#[allow(clippy::ptr_arg)]
+pub trait Api {
 
-    async fn bookmarks_get(
-        &self,
-        context: &C) -> Result<BookmarksGetResponse, ApiError>;
+                /// BookmarksGet - GET /bookmarks
+                async fn bookmarks_get(
+                &self,
+                method: Method,
+                host: Host,
+                cookies: CookieJar,
+                ) -> Result<BookmarksGetResponse, String>;
 
-    async fn bookmarks_post(
-        &self,
-        bookmark_post_request_body: models::BookmarkPostRequestBody,
-        context: &C) -> Result<BookmarksPostResponse, ApiError>;
 
-}
-
-/// API where `Context` isn't passed on every API call
-#[async_trait]
-#[allow(clippy::too_many_arguments, clippy::ptr_arg)]
-pub trait ApiNoContext<C: Send + Sync> {
-
-    fn poll_ready(&self, _cx: &mut Context) -> Poll<Result<(), Box<dyn Error + Send + Sync + 'static>>>;
-
-    fn context(&self) -> &C;
-
-    async fn bookmarks_get(
-        &self,
-        ) -> Result<BookmarksGetResponse, ApiError>;
-
-    async fn bookmarks_post(
-        &self,
-        bookmark_post_request_body: models::BookmarkPostRequestBody,
-        ) -> Result<BookmarksPostResponse, ApiError>;
+                /// BookmarksPost - POST /bookmarks
+                async fn bookmarks_post(
+                &self,
+                method: Method,
+                host: Host,
+                cookies: CookieJar,
+                        body: models::BookmarkPostRequestBody,
+                ) -> Result<BookmarksPostResponse, String>;
 
 }
-
-/// Trait to extend an API to make it easy to bind it to a context.
-pub trait ContextWrapperExt<C: Send + Sync> where Self: Sized
-{
-    /// Binds this API to a context.
-    fn with_context(self, context: C) -> ContextWrapper<Self, C>;
-}
-
-impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ContextWrapperExt<C> for T {
-    fn with_context(self: T, context: C) -> ContextWrapper<T, C> {
-         ContextWrapper::<T, C>::new(self, context)
-    }
-}
-
-#[async_trait]
-impl<T: Api<C> + Send + Sync, C: Clone + Send + Sync> ApiNoContext<C> for ContextWrapper<T, C> {
-    fn poll_ready(&self, cx: &mut Context) -> Poll<Result<(), ServiceError>> {
-        self.api().poll_ready(cx)
-    }
-
-    fn context(&self) -> &C {
-        ContextWrapper::context(self)
-    }
-
-    async fn bookmarks_get(
-        &self,
-        ) -> Result<BookmarksGetResponse, ApiError>
-    {
-        let context = self.context().clone();
-        self.api().bookmarks_get(&context).await
-    }
-
-    async fn bookmarks_post(
-        &self,
-        bookmark_post_request_body: models::BookmarkPostRequestBody,
-        ) -> Result<BookmarksPostResponse, ApiError>
-    {
-        let context = self.context().clone();
-        self.api().bookmarks_post(bookmark_post_request_body, &context).await
-    }
-
-}
-
-
-#[cfg(feature = "client")]
-pub mod client;
-
-// Re-export Client as a top-level name
-#[cfg(feature = "client")]
-pub use client::Client;
 
 #[cfg(feature = "server")]
 pub mod server;
 
-// Re-export router() as a top-level name
-#[cfg(feature = "server")]
-pub use self::server::Service;
-
-#[cfg(feature = "server")]
-pub mod context;
-
 pub mod models;
+pub mod types;
 
-#[cfg(any(feature = "client", feature = "server"))]
+#[cfg(feature = "server")]
 pub(crate) mod header;

@@ -1,8 +1,7 @@
+use std::{convert::TryFrom, fmt, ops::Deref};
+
 use chrono::{DateTime, Utc};
-use hyper::header::HeaderValue;
-use std::convert::TryFrom;
-use std::fmt;
-use std::ops::Deref;
+use http::HeaderValue;
 
 /// A struct to allow homogeneous conversion into a HeaderValue. We can't
 /// implement the From/Into trait on HeaderValue because we don't own
@@ -20,7 +19,7 @@ impl<T> Deref for IntoHeaderValue<T> {
     }
 }
 
-// Derive for each TryFrom<T> in hyper::header::HeaderValue
+// Derive for each TryFrom<T> in http::HeaderValue
 
 macro_rules! ihv_generate {
     ($t:ident) => {
@@ -120,7 +119,8 @@ impl TryFrom<IntoHeaderValue<String>> for HeaderValue {
     }
 }
 
-// bool
+// Bool
+
 impl TryFrom<HeaderValue> for IntoHeaderValue<bool> {
     type Error = String;
 

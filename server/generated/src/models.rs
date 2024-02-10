@@ -1,10 +1,18 @@
 #![allow(unused_qualifications)]
 
+use http::HeaderValue;
 use validator::Validate;
 
-use crate::models;
-#[cfg(any(feature = "client", feature = "server"))]
+#[cfg(feature = "server")]
 use crate::header;
+use crate::{models, types::*};
+
+      
+      
+
+
+
+
 
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, validator::Validate)]
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
@@ -19,7 +27,7 @@ pub struct Bookmark {
 
 
 impl Bookmark {
-    #[allow(clippy::new_without_default)]
+    #[allow(clippy::new_without_default, clippy::too_many_arguments)]
     pub fn new(title: String, url: String, ) -> Bookmark {
         Bookmark {
             title,
@@ -98,15 +106,15 @@ impl std::str::FromStr for Bookmark {
     }
 }
 
-// Methods for converting between header::IntoHeaderValue<Bookmark> and hyper::header::HeaderValue
+// Methods for converting between header::IntoHeaderValue<Bookmark> and HeaderValue
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<header::IntoHeaderValue<Bookmark>> for hyper::header::HeaderValue {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<header::IntoHeaderValue<Bookmark>> for HeaderValue {
     type Error = String;
 
     fn try_from(hdr_value: header::IntoHeaderValue<Bookmark>) -> std::result::Result<Self, Self::Error> {
         let hdr_value = hdr_value.to_string();
-        match hyper::header::HeaderValue::from_str(&hdr_value) {
+        match HeaderValue::from_str(&hdr_value) {
              std::result::Result::Ok(value) => std::result::Result::Ok(value),
              std::result::Result::Err(e) => std::result::Result::Err(
                  format!("Invalid header value for Bookmark - value: {} is invalid {}",
@@ -115,11 +123,11 @@ impl std::convert::TryFrom<header::IntoHeaderValue<Bookmark>> for hyper::header:
     }
 }
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderValue<Bookmark> {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<HeaderValue> for header::IntoHeaderValue<Bookmark> {
     type Error = String;
 
-    fn try_from(hdr_value: hyper::header::HeaderValue) -> std::result::Result<Self, Self::Error> {
+    fn try_from(hdr_value: HeaderValue) -> std::result::Result<Self, Self::Error> {
         match hdr_value.to_str() {
              std::result::Result::Ok(value) => {
                     match <Bookmark as std::str::FromStr>::from_str(value) {
@@ -137,6 +145,11 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 }
 
 
+
+
+
+
+
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, validator::Validate)]
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkDirectory {
@@ -150,7 +163,7 @@ pub struct BookmarkDirectory {
 
 
 impl BookmarkDirectory {
-    #[allow(clippy::new_without_default)]
+    #[allow(clippy::new_without_default, clippy::too_many_arguments)]
     pub fn new(title: String, bookmark_list: Vec<models::Bookmark>, ) -> BookmarkDirectory {
         BookmarkDirectory {
             title,
@@ -226,15 +239,15 @@ impl std::str::FromStr for BookmarkDirectory {
     }
 }
 
-// Methods for converting between header::IntoHeaderValue<BookmarkDirectory> and hyper::header::HeaderValue
+// Methods for converting between header::IntoHeaderValue<BookmarkDirectory> and HeaderValue
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkDirectory>> for hyper::header::HeaderValue {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkDirectory>> for HeaderValue {
     type Error = String;
 
     fn try_from(hdr_value: header::IntoHeaderValue<BookmarkDirectory>) -> std::result::Result<Self, Self::Error> {
         let hdr_value = hdr_value.to_string();
-        match hyper::header::HeaderValue::from_str(&hdr_value) {
+        match HeaderValue::from_str(&hdr_value) {
              std::result::Result::Ok(value) => std::result::Result::Ok(value),
              std::result::Result::Err(e) => std::result::Result::Err(
                  format!("Invalid header value for BookmarkDirectory - value: {} is invalid {}",
@@ -243,11 +256,11 @@ impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkDirectory>> for hyper
     }
 }
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderValue<BookmarkDirectory> {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<HeaderValue> for header::IntoHeaderValue<BookmarkDirectory> {
     type Error = String;
 
-    fn try_from(hdr_value: hyper::header::HeaderValue) -> std::result::Result<Self, Self::Error> {
+    fn try_from(hdr_value: HeaderValue) -> std::result::Result<Self, Self::Error> {
         match hdr_value.to_str() {
              std::result::Result::Ok(value) => {
                     match <BookmarkDirectory as std::str::FromStr>::from_str(value) {
@@ -265,6 +278,11 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 }
 
 
+
+
+
+
+
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, validator::Validate)]
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkGetOkResponse {
@@ -275,7 +293,7 @@ pub struct BookmarkGetOkResponse {
 
 
 impl BookmarkGetOkResponse {
-    #[allow(clippy::new_without_default)]
+    #[allow(clippy::new_without_default, clippy::too_many_arguments)]
     pub fn new(bookmark_directory_list: Vec<models::BookmarkDirectory>, ) -> BookmarkGetOkResponse {
         BookmarkGetOkResponse {
             bookmark_directory_list,
@@ -342,15 +360,15 @@ impl std::str::FromStr for BookmarkGetOkResponse {
     }
 }
 
-// Methods for converting between header::IntoHeaderValue<BookmarkGetOkResponse> and hyper::header::HeaderValue
+// Methods for converting between header::IntoHeaderValue<BookmarkGetOkResponse> and HeaderValue
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkGetOkResponse>> for hyper::header::HeaderValue {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkGetOkResponse>> for HeaderValue {
     type Error = String;
 
     fn try_from(hdr_value: header::IntoHeaderValue<BookmarkGetOkResponse>) -> std::result::Result<Self, Self::Error> {
         let hdr_value = hdr_value.to_string();
-        match hyper::header::HeaderValue::from_str(&hdr_value) {
+        match HeaderValue::from_str(&hdr_value) {
              std::result::Result::Ok(value) => std::result::Result::Ok(value),
              std::result::Result::Err(e) => std::result::Result::Err(
                  format!("Invalid header value for BookmarkGetOkResponse - value: {} is invalid {}",
@@ -359,11 +377,11 @@ impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkGetOkResponse>> for h
     }
 }
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderValue<BookmarkGetOkResponse> {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<HeaderValue> for header::IntoHeaderValue<BookmarkGetOkResponse> {
     type Error = String;
 
-    fn try_from(hdr_value: hyper::header::HeaderValue) -> std::result::Result<Self, Self::Error> {
+    fn try_from(hdr_value: HeaderValue) -> std::result::Result<Self, Self::Error> {
         match hdr_value.to_str() {
              std::result::Result::Ok(value) => {
                     match <BookmarkGetOkResponse as std::str::FromStr>::from_str(value) {
@@ -381,6 +399,11 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 }
 
 
+
+
+
+
+
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, validator::Validate)]
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkPostOkResponse {
@@ -391,7 +414,7 @@ pub struct BookmarkPostOkResponse {
 
 
 impl BookmarkPostOkResponse {
-    #[allow(clippy::new_without_default)]
+    #[allow(clippy::new_without_default, clippy::too_many_arguments)]
     pub fn new(message: String, ) -> BookmarkPostOkResponse {
         BookmarkPostOkResponse {
             message,
@@ -461,15 +484,15 @@ impl std::str::FromStr for BookmarkPostOkResponse {
     }
 }
 
-// Methods for converting between header::IntoHeaderValue<BookmarkPostOkResponse> and hyper::header::HeaderValue
+// Methods for converting between header::IntoHeaderValue<BookmarkPostOkResponse> and HeaderValue
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostOkResponse>> for hyper::header::HeaderValue {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostOkResponse>> for HeaderValue {
     type Error = String;
 
     fn try_from(hdr_value: header::IntoHeaderValue<BookmarkPostOkResponse>) -> std::result::Result<Self, Self::Error> {
         let hdr_value = hdr_value.to_string();
-        match hyper::header::HeaderValue::from_str(&hdr_value) {
+        match HeaderValue::from_str(&hdr_value) {
              std::result::Result::Ok(value) => std::result::Result::Ok(value),
              std::result::Result::Err(e) => std::result::Result::Err(
                  format!("Invalid header value for BookmarkPostOkResponse - value: {} is invalid {}",
@@ -478,11 +501,11 @@ impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostOkResponse>> for 
     }
 }
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderValue<BookmarkPostOkResponse> {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<HeaderValue> for header::IntoHeaderValue<BookmarkPostOkResponse> {
     type Error = String;
 
-    fn try_from(hdr_value: hyper::header::HeaderValue) -> std::result::Result<Self, Self::Error> {
+    fn try_from(hdr_value: HeaderValue) -> std::result::Result<Self, Self::Error> {
         match hdr_value.to_str() {
              std::result::Result::Ok(value) => {
                     match <BookmarkPostOkResponse as std::str::FromStr>::from_str(value) {
@@ -500,6 +523,11 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
 }
 
 
+
+
+
+
+
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize, validator::Validate)]
 #[cfg_attr(feature = "conversion", derive(frunk::LabelledGeneric))]
 pub struct BookmarkPostRequestBody {
@@ -510,7 +538,7 @@ pub struct BookmarkPostRequestBody {
 
 
 impl BookmarkPostRequestBody {
-    #[allow(clippy::new_without_default)]
+    #[allow(clippy::new_without_default, clippy::too_many_arguments)]
     pub fn new(bookmark_directory_list: Vec<models::BookmarkDirectory>, ) -> BookmarkPostRequestBody {
         BookmarkPostRequestBody {
             bookmark_directory_list,
@@ -577,15 +605,15 @@ impl std::str::FromStr for BookmarkPostRequestBody {
     }
 }
 
-// Methods for converting between header::IntoHeaderValue<BookmarkPostRequestBody> and hyper::header::HeaderValue
+// Methods for converting between header::IntoHeaderValue<BookmarkPostRequestBody> and HeaderValue
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostRequestBody>> for hyper::header::HeaderValue {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostRequestBody>> for HeaderValue {
     type Error = String;
 
     fn try_from(hdr_value: header::IntoHeaderValue<BookmarkPostRequestBody>) -> std::result::Result<Self, Self::Error> {
         let hdr_value = hdr_value.to_string();
-        match hyper::header::HeaderValue::from_str(&hdr_value) {
+        match HeaderValue::from_str(&hdr_value) {
              std::result::Result::Ok(value) => std::result::Result::Ok(value),
              std::result::Result::Err(e) => std::result::Result::Err(
                  format!("Invalid header value for BookmarkPostRequestBody - value: {} is invalid {}",
@@ -594,11 +622,11 @@ impl std::convert::TryFrom<header::IntoHeaderValue<BookmarkPostRequestBody>> for
     }
 }
 
-#[cfg(any(feature = "client", feature = "server"))]
-impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderValue<BookmarkPostRequestBody> {
+#[cfg(feature = "server")]
+impl std::convert::TryFrom<HeaderValue> for header::IntoHeaderValue<BookmarkPostRequestBody> {
     type Error = String;
 
-    fn try_from(hdr_value: hyper::header::HeaderValue) -> std::result::Result<Self, Self::Error> {
+    fn try_from(hdr_value: HeaderValue) -> std::result::Result<Self, Self::Error> {
         match hdr_value.to_str() {
              std::result::Result::Ok(value) => {
                     match <BookmarkPostRequestBody as std::str::FromStr>::from_str(value) {
@@ -614,4 +642,6 @@ impl std::convert::TryFrom<hyper::header::HeaderValue> for header::IntoHeaderVal
         }
     }
 }
+
+
 
