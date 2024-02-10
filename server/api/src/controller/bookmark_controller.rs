@@ -36,7 +36,7 @@ impl<C> Api<C> for Server<C> where C: Has<XSpanIdString> + Send + Sync
     {
         infra::set(bookmark_post_request_body.bookmark_directory_list);
         return Ok(BookmarksPostResponse::OkResponse(
-            models::BookmarkPostOkResponse { 
+            BookmarkPostOkResponse { 
                 message: "ok".to_string() 
             }
         ));
